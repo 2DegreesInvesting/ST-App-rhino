@@ -23,15 +23,16 @@ box::use(
 
 #' @export
 ui <- function(id) {
-  tagList(
+  ns <- NS(id)
+tagList(
   
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "colors.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "colors.scss")
   ),
   
   navbarPage(
     
-    id = 'fsst_overview',
+    id = ns('fsst_overview'),
     title = div(
       div(
         img(src = 'static/2DII-Logo-White150px.png',
@@ -41,9 +42,12 @@ ui <- function(id) {
     # FSST Home
     tabPanel("Home", 
              fluidRow(
+               # column(12, p('Climate Stress Testing can be confusing. This dashboard helps to see light.')),
                column(12, align = 'center',
-                      actionButton('to_repo', 'To the Stress Test Repository', icon("arrow-alt-circle-right"), 
+                      actionButton(ns("to_repo"), 'To the Stress Test Repository', icon("arrow-alt-circle-right"), 
                                    style = "color: #E9E4E3; background-color: #F53D3F; border-color: #E9E4E3; display:center-align; padding:10px; font-size: 150%")),
+               # column(12, align = 'center', 
+               #        'Financial Stability Stress Testing'),
                column(12,
                       img(src = 'static/Jenga - lighter.jpg', width = '100%'))
                )),
@@ -59,7 +63,7 @@ ui <- function(id) {
                              p('In this repository, we hold three scenarios. They share the following indicators.'),
                              p('Please explore the net in order to see which providers we currently feature (colored nodes),
                         and which indicators they share (grey nodes).')), 
-                      column(8, forceNetworkOutput("repository_scatter"))),
+                      column(8, forceNetworkOutput(ns("repository_scatter")))),
                column(12, 
                       column(4, 
                              h2('The outputs'),
@@ -68,7 +72,7 @@ ui <- function(id) {
                              p('De Nederlandsche Bank (DNB) expresses financial impact in terms of changed equity returns.'),
                              p('Banque de France (BdF) expresses those financial impacts in terms of changes in costs of capital.'),
                              p('Harmonizing those indicators would be a major contribution to make scenarios comparable across providers.')),
-                      column(8, plotlyOutput("repository_bar"))),
+                      column(8, plotlyOutput(ns("repository_bar")))),
                br(),
                br(),
                column(12, fluidRow(
@@ -78,13 +82,13 @@ ui <- function(id) {
                         p('Please choose in the box below.')))),
                  column(12, fluidRow(
                    column(4, p('What would you like to do?')),
-                   column(4, selectInput('provider_choice', label = NULL, choices = list('Compare two providers', 'Focus on one provider'))),
+                   column(4, selectInput(ns("provider_choice"), label = NULL, choices = list('Compare two providers', 'Focus on one provider'))),
                    column(4, '')
                  )),
                  br(),
                  br(),
                  column(12, fluidRow(
-                   uiOutput('one_or_two_providers')
+                   uiOutput(ns('one_or_two_providers'))
                  ))
                 ),
              br(),
@@ -95,30 +99,19 @@ ui <- function(id) {
                       p('You can download information about the various scenarios according to your selection.'))
              ),
              br(),
-             fluidRow(column(12, DT::dataTableOutput("repository_overview"))),
-             fluidRow(column(12, align = 'center', downloadButton('downloadData', 'Download filtered data')))
+             # shiny::dataTableOutput is superseded
+             fluidRow(column(12, DT::dataTableOutput(ns("repository_overview")))),
+             fluidRow(column(12, align = 'center', downloadButton(ns("downloadData"), 'Download filtered data')))
              ),
-    
-    # FSST Scenario configurator
-    tabPanel("Scenario configurator",
-             fluidRow(column(12, 'Under construction', align = 'center'),
-                      column(12, align = 'center',
-                             img(src = 'static/elvir-k-Xtyh5b5GGX4-unsplash.jpg', width = 500)))),
-    
-    # FSST Portfolio tool 
-    tabPanel("Portfolio Tool", 
-             fluidRow(column(12, 'Under construction', align = 'center'),
-                      column(12, align = 'center',
-                             img(src = 'static/elvir-k-Xtyh5b5GGX4-unsplash.jpg', width = 500)))), 
     
     # Methodology
     tabPanel("Methodology", 
-             fluidRow(column(12, includeMarkdown('static/methodology.Rmd')))
+             fluidRow(column(12, includeMarkdown('app/logic/methodology.Rmd')))
              ),
     
     # About us 
     tabPanel("About 2° Investing Initiative",
-             fluidRow(column(12, includeMarkdown('static/2dii.Rmd')))
+             fluidRow(column(12, includeMarkdown('app/logic/2dii.Rmd')))
              ), 
     
     # Footer -------------------------------
@@ -132,7 +125,6 @@ ui <- function(id) {
           )
     )
   )
-
 }
 
 #' @export
@@ -173,7 +165,7 @@ server <- function(id) {
         fluidRow(
           column(12, fluidRow(
             column(4, 'Select provider'),
-            column(4, selectInput('provider_single', NULL, choices = banks, selected = 'Bank of England')),
+            column(4, selectInput(session$ns("provider_single"), NULL, choices = banks, selected = 'Bank of England')),
             column(4, '')
             )),
           # column(12, fluidRow(
@@ -185,18 +177,18 @@ server <- function(id) {
             fluidRow(
               
               column(4, 
-                     column(12, selectInput('x_axis_left', 'Horizontal', choices = list('Year'))),
-                     column(12, selectInput('y_axis_left', 'Vertical', choices = list('GDP growth', 'inflation/ consumer prices level')))),#, 'carbon price', 'end user price coal')))),
+                     column(12, selectInput(session$ns('x_axis_left'), 'Horizontal', choices = list('Year'))),
+                     column(12, selectInput(session$ns('y_axis_left'), 'Vertical', choices = list('GDP growth', 'inflation/ consumer prices level')))),#, 'carbon price', 'end user price coal')))),
               column(8, 
-                     plotlyOutput('chart_left_single'))
+                     plotlyOutput(session$ns('chart_left_single')))
             )),
           column(12, fluidRow(
             fluidRow(
               column(4, 
-                     column(12, selectInput('x_axis_right', 'Horizontal', choices = list('GDP growth', 'inflation/ consumer prices level'), selected = 'GDP growth')),#, 'carbon price', 'end user price coal'))),
-                     column(12, selectInput('y_axis_right', 'Vertical', choices = list('inflation/ consumer prices level', 'GDP growth'), selected = 'inflation/ consumer prices level'))),#, 'carbon price', 'end user price coal')))),
+                     column(12, selectInput(session$ns('x_axis_right'), 'Horizontal', choices = list('GDP growth', 'inflation/ consumer prices level'), selected = 'GDP growth')),#, 'carbon price', 'end user price coal'))),
+                     column(12, selectInput(session$ns('y_axis_right'), 'Vertical', choices = list('inflation/ consumer prices level', 'GDP growth'), selected = 'inflation/ consumer prices level'))),#, 'carbon price', 'end user price coal')))),
               column(8, 
-                     plotlyOutput('chart_right_single'))
+                     plotlyOutput(session$ns('chart_right_single')))
             )
           )
           )
@@ -207,23 +199,23 @@ server <- function(id) {
         fluidRow(
           column(12, fluidRow(
             column(4, 
-                   selectInput('provider_total_1', 
+                   selectInput(session$ns('provider_total_1'), 
                                'Select two providers', 
                                choices = banks, 
                                selected = 'Banque de France'),
-                   selectInput('provider_total_2', 
+                   selectInput(session$ns('provider_total_2'), 
                                NULL,
                                choices = banks, 
                                selected = 'Bank of England'),
                    # selectInput('geography_total', 
                    #             'Select a geography', 
                    #             choices = list('Netherlands', 'Global', 'France', 'US')),
-                   selectInput('indicator_total',
+                   selectInput(session$ns('indicator_total'),
                                'Select an indicator', 
                                choices = list('GDP growth', 'inflation/ consumer prices level'), #'carbon price', 'end user price coal'),
                                selected = 'inflation/ consumer prices level')),
             column(8, 
-                   plotlyOutput('chart_left_double')
+                   plotlyOutput(session$ns('chart_left_double'))
                    )
           ))
         )
@@ -316,8 +308,8 @@ server <- function(id) {
         
         fig <- plot_ly(
           data_GDP,
-          x = as.formula(paste("~", variable_x)),
-          y = as.formula(paste("~", variable_y)),
+          x = stats::as.formula(paste("~", variable_x)),
+          y = stats::as.formula(paste("~", variable_y)),
           color = ~scenario,
           type = "scatter",
           mode = "lines", 
@@ -369,8 +361,8 @@ server <- function(id) {
       
       fig2 <- plot_ly(
         data_GDP_CPI,
-        x = as.formula(paste("~", variable_x)),
-        y = as.formula(paste("~", variable_y)),
+        x = stats::as.formula(paste("~", variable_x)),
+        y = stats::as.formula(paste("~", variable_y)),
         color = ~scenario,
         type = "scatter",
         mode = "markers", 
@@ -400,7 +392,7 @@ server <- function(id) {
       mutate(across(matches("Year"), as.factor))
     col_filter <- list(position = "top", clear = FALSE, plain = TRUE)
     output$repository_overview <- DT::renderDataTable(data, server = FALSE, filter = col_filter)
-      # formatStyle(background = '#E9E4E3')
+    # formatStyle(background = '#E9E4E3')
 
     # Download the filtered data 
     

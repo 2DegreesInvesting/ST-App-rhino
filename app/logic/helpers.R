@@ -11,7 +11,7 @@ box::use(
 convert_to_rgba_strings <- function(hex_vec, alpha = 0.5) {
   str_vec <- c()
   for (hex in hex_vec) {
-    rgb_vec <- col2rgb(hex)
+    rgb_vec <- grDevices::col2rgb(hex)
     str <- glue::glue("rgba(", paste(rgb_vec, collapse = ","), ", {as.character(alpha)})")
     str_vec <- c(str_vec, str)
   }
