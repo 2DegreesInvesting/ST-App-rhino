@@ -1,0 +1,62 @@
+---
+title: "Methodology"
+output: html_document
+---
+
+# Methodology 
+
+## Intuition 
+
+The dashboard 'Financial Stability Stress Test' was created as an effort to make the scenarios provided by the Network for Greening the Financial System (short: NGFS) more relatable, usable and understandable. It is divided in three sections that build on top of each other but can be used separately. 
+
+* The Repository gives an overview of the existing exercises that have been done by various financial supervisors. The graphs are designed to explain differences in input indicators as well as calculated outputs. The overview tables should give the user the opportunity to compare indicators across scenarios and/or providers. 
+
+* The Portfolio Assessment lets the user apply a stress test with fixed variable on an individual portfolio. For this, running the PACTA methodology on transitionmonitor.com is necessary. If a bank loan portfolio should be analysed, extra steps need to be followed. For instructions, please see below. 
+
+* The Designer is the most advanced tool on the dashboard. It gives the user the opportunity to relax and change certain assumption on input indicators on a given stress test model. The aim is to understand sensitivities in the model better. 
+
+
+
+## Sources
+
+Currently, three data sources are included as providers of Stress Test exercises: 
+* The Dutch central bank De Nederlandsche Bank (DNB)
+* The French central bank Banque de France (BdF)
+* The British central bank Bank of England (BoE)
+
+For each source, we a use a publicly available reference paper as well as non-public data sets provided by the banks. 
+
+DNB published "[An energy transition risk stress test for the financial system of the Netherlands](https://www.dnb.nl/media/pdnpdalc/201810_nr-_7_-2018-_an_energy_transition_risk_stress_test_for_the_financial_system_of_the_netherlands.pdf)" in 2018. 
+
+BdF published "[The main results of the 2020 climate pilot exercise](https://acpr.banque-france.fr/en/analysis-and-synthesis-no-122-main-results-2020-climate-pilot-exercise)" recently in 2021. 
+
+BoE published their results also in 2021: "[Stress testing the UK banking system: Key elements of the 2021 stress test](https://www.bankofengland.co.uk/stress-testing/2021/key-elements-of-the-2021-stress-test)"
+
+
+
+## Tools 
+
+### Repository
+
+This section includes information on how the repository overview table has been developed.
+
+In a first step, the above mentioned sources were used to extract as much as possible input and output indicators as a list. In a second step, similar indicators were grouped together. 'Similar' in this sense means 'describing similar economic phenomens', but not necessarily in the same unit. This includes f.e. GDP growth as a relative term expressed in % and absolute GDP in real Euro. A third step tried to convert these similar indicators to a common ground. 
+
+This method leaves strong limitations: 
+
+* Different Stress Testing approaches: The Stress Test exercises used on this dashboard differ to an extent in their base assumptions and approaches to the task. While DNB f.e. uses a five year time horizon, BdF and BoE look at much longer time horizons of 30 years. This is more in line with the published NGFS scenarios that were provided after the DNB exercise. 
+* Availability: Only a small set of shared indicators across providers and scenarios is available. Even conversion of similar indicators is possible only on few variable. 
+* Scope included in the analysis: All exercises have a different scope in terms of the financial players they include in their analysis. Some include insurers, banks and pension funds, other leave out f.e. pension funds. This makes results on impact on financial systems less comparable. 
+* General limitations: None of the exercises include second round effects or just in a very limited fashion. This makes the informative value limited in itself.  
+
+### Portfolio Assessment 
+
+This section includes information on how the assessment of individual portfolios works. 
+
+* PACTA 
+* Stress Testing at 2dii 
+* Results 
+
+### Designer 
+
+TBC. 
