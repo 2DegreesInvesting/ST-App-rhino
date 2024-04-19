@@ -49,3 +49,9 @@ This method leaves strong limitations:
 * Availability: Only a small set of shared indicators across providers and scenarios is available. Even conversion of similar indicators is possible only on few variable. 
 * Scope included in the analysis: All exercises have a different scope in terms of the financial players they include in their analysis. Some include insurers, banks and pension funds, other leave out f.e. pension funds. This makes results on impact on financial systems less comparable. 
 * General limitations: None of the exercises include second round effects or just in a very limited fashion. This makes the informative value limited in itself.  
+
+
+### EU LIFE Project Grant
+Scientific Transition Risk Exercises for Stress tests & Scenario Analysis has received funding from the European Union’s Life programme under Grant No. LIFE21-GIC-DE-Stress under the LIFE-2021-SAP-CLIMA funding call.
+
+![](static/logo_life_stress.jpg){width=30%}

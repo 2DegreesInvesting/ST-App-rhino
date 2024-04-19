@@ -2,7 +2,7 @@ FROM rocker/shiny:4.3.0
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libglpk-dev \
+    libglpk-dev \ 
     && rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --system shiny \
