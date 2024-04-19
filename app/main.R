@@ -76,28 +76,65 @@ tagList(
     ),
     navbarPage(
       id = ns('fsst_overview'),
-      title = "Financial Stress Test Tools",
+      title = "Climate Stress Test Tools",
       theme = shinythemes::shinytheme("flatly"),
-      tabPanel("Repository Tool",
-        fluidRow(
-          column(12, 
-            column(4, h2('The Inputs'), p('Explore three different scenarios and their shared indicators.')),
-            column(8, forceNetworkOutput(ns("repository_scatter")))
-          ),
-          column(12, 
-            column(4, h2('The Outputs'), p('See how different organizations express financial impacts.')),
-            column(8, plotlyOutput(ns("repository_bar")))
-          ),
-          br(),
-          column(12, h2('The Data'), p('Search and compare data in a table format.'), DT::dataTableOutput(ns("repository_overview"))),
-          column(12, align = 'center', downloadButton(ns("downloadData"), 'Download Filtered Data'))
-        )
-      ),
-      tabPanel("Methodology",
-        fluidRow(column(12, includeMarkdown('app/logic/methodology.md')))
-      )
+      tabPanel("GDP Stress Test Tool",
+        h1('Repository Tool'),
+             p('This is your place to go for comparing climate stress testing scenarios, as well along approaches as to their final outcome.'),
+             fluidRow(
+               column(12,
+                      column(4,
+                             h2('The inputs'),
+                             p('In this repository, we hold three scenarios. They share the following indicators.'),
+                             p('Please explore the net in order to see which providers we currently feature.')),
+                      column(8, forceNetworkOutput(ns("repository_scatter")))),
+               column(12,
+                      column(4,
+                             h2('The outputs'),
+                             p('While the scenarios and providers share some input information, they share very little output indicators,
+                               that is indicators how the stress test outcome is denominated.'),
+                             p('De Nederlandsche Bank (DNB) expresses financial impact in terms of changed equity returns.'),
+                             p('Banque de France (BdF) expresses those financial impacts in terms of changes in costs of capital.'),
+                             p('Harmonizing those indicators would be a major contribution to make scenarios comparable across providers.')),
+                      column(8, plotlyOutput(ns("repository_bar")))),
+               br(),
+               br(),
+               column(12, fluidRow(
+                 column(4,
+                        h2('The comparison'),
+                        p('This section gives you the opportunity for comparison - either across scenarios and indicators of one provider or across two prodiders.'),
+                        p('Please choose in the box below.')))),
+                 column(12, fluidRow(
+                   column(4, p('What would you like to do?')),
+                   column(4, selectInput(ns("provider_choice"), label = NULL, choices = list('Compare two providers', 'Focus on one provider'))),
+                   column(4, '')
+                 )),
+                 br(),
+                 br(),
+                 column(12, fluidRow(
+                   uiOutput(ns('one_or_two_providers'))
+                 ))
+                ),
+             br(),
+             fluidRow(
+               column(4,
+                      h2('The data'),
+                      p('In this last section of the Stress Test Repository, you get to search and compare data in a table format.'),
+                      p('You can download information about the various scenarios according to your selection.'))
+             ),
+             br(),
+             # shiny::dataTableOutput is superseded
+             fluidRow(column(12, DT::dataTableOutput(ns("repository_overview")))),
+             fluidRow(column(12, align = 'center', downloadButton(ns("downloadData"), 'Download filtered data')))
+             ),
+
+    # Methodology
+    tabPanel("Methodology",
+             fluidRow(column(12, includeMarkdown('app/logic/methodology.Rmd')))
+                      )           
     )
-  )
+    )
+  
 }
 
 
@@ -296,9 +333,7 @@ server <- function(id) {
           layout(
             title = provider_value,
             xaxis = list(title = stringr::str_to_title(variable_x)),
-            yaxis = list(title = stringr::str_to_title(variable_y)),
-            paper_bgcolor='#E9E4E3',
-            plot_bgcolor='#E9E4E3'
+            yaxis = list(title = stringr::str_to_title(variable_y))
           )
       }
 
@@ -352,9 +387,7 @@ server <- function(id) {
         layout(
           title = provider_value,
           xaxis = list(title = stringr::str_to_title(variable_x)),
-          yaxis = list(title = stringr::str_to_title(variable_y)),
-          paper_bgcolor='#E9E4E3',
-          plot_bgcolor='#E9E4E3'
+          yaxis = list(title = stringr::str_to_title(variable_y))
         )
 
       print(fig2)

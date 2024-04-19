@@ -63,8 +63,6 @@ plot_timeseries_one_provider <- function(
         font = list(family = "ITC Cheltenham Std Light Condensed"),
         xaxis = list(title = x_axis_title),
         yaxis = list(title = y_axis_title),
-        plot_bgcolor = r2dii.colours::palette_1in1000_background,
-        paper_bgcolor = r2dii.colours::palette_1in1000_background,
         legend = list(title = list(text = "Scenario"))
       )
   if (title) {
