@@ -74,103 +74,32 @@ tagList(
         }
       "))
     ),
-
-  navbarPage(
-
-    id = ns('fsst_overview'),
-    title = div(
-      div(
-        img(src = 'static/2DII-Logo-White150px.png',
-            style = 'position:absolute;right:15px;bottom:15px;top:5px;z-index:1000000')
-      )),
-
-    # FSST Home
-    tabPanel("Home",
-             fluidRow(
-               # column(12, p('Climate Stress Testing can be confusing. This dashboard helps to see light.')),
-               column(12, align = 'center',
-                      actionButton(ns("to_repo"), 'To the Stress Test Repository', icon("arrow-alt-circle-right"),
-                                   style = "color: #E9E4E3; background-color: #F53D3F; border-color: #E9E4E3; display:center-align; padding:10px; font-size: 150%")),
-               # column(12, align = 'center',
-               #        'Financial Stability Stress Testing'),
-               column(12,
-                      img(src = 'static/Jenga - lighter.jpg', width = '100%'))
-               )),
-
-    # FSST Repository
-    tabPanel("Repository Tool",
-             h1('Repository Tool'),
-             p('This is your place to go for comparing climate stress testing scenarios, as well along approaches as to their final outcome.'),
-             fluidRow(
-               column(12,
-                      column(4,
-                             h2('The inputs'),
-                             p('In this repository, we hold three scenarios. They share the following indicators.'),
-                             p('Please explore the net in order to see which providers we currently feature (colored nodes),
-                        and which indicators they share (grey nodes).')),
-                      column(8, forceNetworkOutput(ns("repository_scatter")))),
-               column(12,
-                      column(4,
-                             h2('The outputs'),
-                             p('While the scenarios and providers share some input information, they share very little output indicators,
-                               that is indicators how the stress test outcome is denominated.'),
-                             p('De Nederlandsche Bank (DNB) expresses financial impact in terms of changed equity returns.'),
-                             p('Banque de France (BdF) expresses those financial impacts in terms of changes in costs of capital.'),
-                             p('Harmonizing those indicators would be a major contribution to make scenarios comparable across providers.')),
-                      column(8, plotlyOutput(ns("repository_bar")))),
-               br(),
-               br(),
-               column(12, fluidRow(
-                 column(4,
-                        h2('The comparison'),
-                        p('This section gives you the opportunity for comparison - either across scenarios and indicators of one provider or across two prodiders.'),
-                        p('Please choose in the box below.')))),
-                 column(12, fluidRow(
-                   column(4, p('What would you like to do?')),
-                   column(4, selectInput(ns("provider_choice"), label = NULL, choices = list('Compare two providers', 'Focus on one provider'))),
-                   column(4, '')
-                 )),
-                 br(),
-                 br(),
-                 column(12, fluidRow(
-                   uiOutput(ns('one_or_two_providers'))
-                 ))
-                ),
-             br(),
-             fluidRow(
-               column(4,
-                      h2('The data'),
-                      p('In this last section of the Stress Test Repository, you get to search and compare data in a table format.'),
-                      p('You can download information about the various scenarios according to your selection.'))
-             ),
-             br(),
-             # shiny::dataTableOutput is superseded
-             fluidRow(column(12, DT::dataTableOutput(ns("repository_overview")))),
-             fluidRow(column(12, align = 'center', downloadButton(ns("downloadData"), 'Download filtered data')))
-             ),
-
-    # Methodology
-    tabPanel("Methodology",
-             fluidRow(column(12, includeMarkdown('app/logic/methodology.Rmd')))
-             ),
-
-    # About us
-    tabPanel("About 2° Investing Initiative",
-             fluidRow(column(12, includeMarkdown('app/logic/2dii.Rmd')))
-             ),
-
-    # Footer -------------------------------
-    windowTitle = 'The FSST Platform ',
-    footer =
-      div(style = "margin-top:15px;float:right;",
-          fluidRow(
-            column(4, p('')),
-            column(3, p('This project received funding from EIT Climate-KIC.')),
-            column(5, img(src = 'static/EIT-CKIC-Logo_Transparent_Standard.png', height = 100)))
-          )
+    navbarPage(
+      id = ns('fsst_overview'),
+      title = "Financial Stress Test Tools",
+      theme = shinythemes::shinytheme("flatly"),
+      tabPanel("Repository Tool",
+        fluidRow(
+          column(12, 
+            column(4, h2('The Inputs'), p('Explore three different scenarios and their shared indicators.')),
+            column(8, forceNetworkOutput(ns("repository_scatter")))
+          ),
+          column(12, 
+            column(4, h2('The Outputs'), p('See how different organizations express financial impacts.')),
+            column(8, plotlyOutput(ns("repository_bar")))
+          ),
+          br(),
+          column(12, h2('The Data'), p('Search and compare data in a table format.'), DT::dataTableOutput(ns("repository_overview"))),
+          column(12, align = 'center', downloadButton(ns("downloadData"), 'Download Filtered Data'))
+        )
+      ),
+      tabPanel("Methodology",
+        fluidRow(column(12, includeMarkdown('app/logic/methodology.md')))
+      )
     )
   )
 }
+
 
 #' @export
 server <- function(id) {
@@ -183,7 +112,7 @@ server <- function(id) {
     # # Load helpers
     #
     # source('helpers.R')
-  banks <- list('Banque de France', 'De Nederlandsche Bank', 'Bank of England')
+  banks <- list('Banque de France', 'De Nederlandsche Bank', 'Bank of England', 'Bank of Canada')
   banks <- stats::setNames(banks, banks)
 
     output$repository_bar <- renderPlotly({
@@ -274,6 +203,8 @@ server <- function(id) {
           provider_1 <- 'DNB'
         } else if (input$provider_total_1=='Bank of England') {
           provider_1 <- 'BoE'
+        } else if (input$provider_total_1 == 'Bank of Canada') {
+          provider_1 <- 'BoC'
         } else {
           provider_1 <- 'NGFS'
         }
@@ -284,6 +215,8 @@ server <- function(id) {
         provider_2 <- 'DNB'
       } else if (input$provider_total_2=='Bank of England') {
         provider_2 <- 'BoE'
+      }  else if (input$provider_total_1 == 'Bank of Canada') {
+        provider_1 <- 'BoC'
       } else {
         provider_2 <- 'NGFS'
       }
@@ -318,6 +251,8 @@ server <- function(id) {
         provider_value <- 'DNB'
       } else if (input$provider_single=='Bank of England') {
         provider_value <- 'BoE'
+      } else if (input$provider_single=='Bank of Canada') {
+        provider_value <- 'BoC'
       } else {
         provider_value <- 'NGFS'
       }
@@ -380,6 +315,8 @@ server <- function(id) {
         provider_value <- 'DNB'
       } else if (input$provider_single=='Bank of England') {
         provider_value <- 'BoE'
+      } else if (input$provider_single=='Bank of Canada') {
+        provider_value <- 'BoC'
       } else {
         provider_value <- 'NGFS'
       }
@@ -435,11 +372,21 @@ server <- function(id) {
       mutate(across(is.character, as.factor)) %>%
       mutate(across(matches("Year"), as.factor))
     col_filter <- list(position = "top", clear = FALSE, plain = TRUE)
-    output$repository_overview <- DT::renderDataTable(data, server = FALSE, filter = col_filter)
-    # formatStyle(background = '#E9E4E3')
-
+    
+    # Ensure that 'dataset_repository' is defined as a reactive expression that fetches your data
+    dataset_repository <- reactive({
+      # Your data fetching logic here
+      repository_data
+    })
+    output$repository_overview <- DT::renderDataTable({
+      # Assuming 'dataset_repository()' is a reactive expression that returns your dataset
+      DT::datatable(
+        dataset_repository(),
+        options = list(server = TRUE),  # Enable server-side processing
+        filter = 'top'
+      )
+    })
     # Download the filtered data
-
     output$downloadData <- downloadHandler(
         filename = function() {
           paste('data-', Sys.Date(), '.csv', sep='')

@@ -133,7 +133,7 @@ plot_box_per_provider <- function(.data, y_axis_title) {
 
 # Function to create the network chart 
 create_network_chart <- function(.data){
-
+browser()
   data <- .data %>% 
     ungroup() %>% 
     dplyr::select(provider, matching_indicator) %>% 

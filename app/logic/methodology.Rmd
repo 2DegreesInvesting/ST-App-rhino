@@ -23,6 +23,7 @@ Currently, three data sources are included as providers of Stress Test exercises
 * The Dutch central bank De Nederlandsche Bank (DNB)
 * The French central bank Banque de France (BdF)
 * The British central bank Bank of England (BoE)
+* The Canadian central bank Bank of Canada (BoC)
 
 For each source, we a use a publicly available reference paper as well as non-public data sets provided by the banks. 
 
@@ -32,7 +33,7 @@ BdF published "[The main results of the 2020 climate pilot exercise](https://acp
 
 BoE published their results also in 2021: "[Stress testing the UK banking system: Key elements of the 2021 stress test](https://www.bankofengland.co.uk/stress-testing/2021/key-elements-of-the-2021-stress-test)"
 
-
+BoC published their results in 2022: "[Climate Transition Scenario data](https://www.bankofcanada.ca/2022/01/climate-transition-scenario-data/)"
 
 ## Tools 
 
@@ -48,15 +49,3 @@ This method leaves strong limitations:
 * Availability: Only a small set of shared indicators across providers and scenarios is available. Even conversion of similar indicators is possible only on few variable. 
 * Scope included in the analysis: All exercises have a different scope in terms of the financial players they include in their analysis. Some include insurers, banks and pension funds, other leave out f.e. pension funds. This makes results on impact on financial systems less comparable. 
 * General limitations: None of the exercises include second round effects or just in a very limited fashion. This makes the informative value limited in itself.  
-
-### Portfolio Assessment 
-
-This section includes information on how the assessment of individual portfolios works. 
-
-* PACTA 
-* Stress Testing at 2dii 
-* Results 
-
-### Designer 
-
-TBC. 
