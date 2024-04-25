@@ -85,7 +85,7 @@ tagList(
                column(12,
                       column(4,
                              h2('The inputs'),
-                             p('In this repository, we hold three scenarios. They share the following indicators.'),
+                             p('In this repository, we hold four scenarios. They share the following indicators.'),
                              p('Please explore the net in order to see which providers we currently feature.')),
                       column(8, forceNetworkOutput(ns("repository_scatter")))),
                column(12,

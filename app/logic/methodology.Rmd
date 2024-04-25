@@ -19,7 +19,7 @@ The dashboard 'Financial Stability Stress Test' was created as an effort to make
 
 ## Sources
 
-Currently, three data sources are included as providers of Stress Test exercises: 
+Currently, four data sources are included as providers of Stress Test exercises: 
 * The Dutch central bank De Nederlandsche Bank (DNB)
 * The French central bank Banque de France (BdF)
 * The British central bank Bank of England (BoE)
@@ -52,6 +52,9 @@ This method leaves strong limitations:
 
 
 ### EU LIFE Project Grant
+
+Co-funded by the European Union. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or CINEA. Neither the European Union nor the granting authority can be held responsible for them.
+
 Scientific Transition Risk Exercises for Stress tests & Scenario Analysis has received funding from the European Union’s Life programme under Grant No. LIFE21-GIC-DE-Stress under the LIFE-2021-SAP-CLIMA funding call.
 
 ![](static/logo_life_stress.jpg){width=30%}
